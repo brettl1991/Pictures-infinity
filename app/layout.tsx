@@ -1,5 +1,5 @@
 import { Bebas_Neue } from "@next/font/google";
-// import "./global.css";
+import "./global.css";
 
 export const metadata = {
   title: "Infinite Scroll",
