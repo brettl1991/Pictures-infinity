@@ -2,6 +2,13 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+type ImgType = {
+  alt_description: string;
+  urls: { regular: string };
+  id: string;
+  links: { html: string };
+};
+
 const HomePage = () => {
   const [data, setData] = useState([]);
 
@@ -24,13 +31,16 @@ const HomePage = () => {
       <div className="loader">
         <Image src="/loader.svg" alt="Loading" height={100} width={100} />
       </div>
-      <div className="image-container">
-        <Image
-          fill
-          src="https://images.unsplash.com/photo-1677432658720-3d84f9d657b4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80"
-          alt="tryingoutimage"
-        />
-      </div>
+
+      {data.map((img: ImgType) => {
+        return (
+          <div key={img.id} className="image-container">
+            <a href={img.links.html} target="_blank">
+              <Image fill src={img.urls.regular} alt={img.alt_description} />
+            </a>
+          </div>
+        );
+      })}
     </div>
   );
 };
