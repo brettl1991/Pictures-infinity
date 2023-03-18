@@ -1,6 +1,23 @@
+"use client";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const count = 10;
+    fetch(
+      `https://api.unsplash.com/photos/?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}&count=${count}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
+
+  console.log("data", data);
+
   return (
     <div>
       <h1>Unsplash API - Infinite Scroll</h1>
