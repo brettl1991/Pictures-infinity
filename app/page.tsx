@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type ImgType = {
@@ -10,34 +11,52 @@ type ImgType = {
 };
 
 const HomePage = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<ImgType[]>([]);
 
-  useEffect(() => {
-    const count = 10;
+  const [isLoading, setIsLoading] = useState(false);
+
+  let count = 5;
+  const getPhotos = () => {
+    setIsLoading(true);
     fetch(
-      `https://api.unsplash.com/photos/?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}&count=${count}`
+      `https://api.unsplash.com/photos/random/?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}&count=${count}`
     )
       .then((res) => res.json())
-      .then((data) => {
-        setData(data);
+      .then((imgs) => {
+        setData([...data, ...imgs]);
       });
+    setIsLoading(false);
+    count = 10;
+  };
+  useEffect(() => {
+    getPhotos();
   }, []);
 
-  console.log("data", data);
+  // console.log("data", data);
+
+  window.addEventListener("scroll", () => {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 1000
+    ) {
+      getPhotos();
+    }
+  });
 
   return (
     <div>
       <h1>Unsplash API - Infinite Scroll</h1>
-      <div className="loader">
-        <Image src="/loader.svg" alt="Loading" height={100} width={100} />
-      </div>
-
-      {data.map((img: ImgType) => {
+      {isLoading && (
+        <div className="loader">
+          <Image src="/loader.svg" alt="Loading" height={100} width={100} />
+        </div>
+      )}
+      {data.map((img: ImgType, index) => {
         return (
-          <div key={img.id} className="image-container">
-            <a href={img.links.html} target="_blank">
+          <div key={img.id + index} className="image-container">
+            <Link href={img.links.html} target="_blank">
               <Image fill src={img.urls.regular} alt={img.alt_description} />
-            </a>
+            </Link>
           </div>
         );
       })}
