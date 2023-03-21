@@ -28,20 +28,19 @@ const HomePage = () => {
     setIsLoading(false);
     count = 10;
   };
-  useEffect(() => {
-    getPhotos();
-  }, []);
 
   // console.log("data", data);
 
-  window.addEventListener("scroll", () => {
-    if (
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 1000
-    ) {
-      getPhotos();
-    }
-  });
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 1000
+      ) {
+        getPhotos();
+      }
+    });
+  }, []);
 
   return (
     <div>
