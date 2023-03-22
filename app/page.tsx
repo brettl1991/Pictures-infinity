@@ -26,8 +26,6 @@ const HomePage = () => {
         setData([...data, ...imgs]);
       });
     setIsLoading(false);
-
-    count = 10;
   };
 
   console.log("data", data);
