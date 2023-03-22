@@ -15,8 +15,8 @@ const HomePage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  let count = 5;
   const getPhotos = () => {
+    let count = 5;
     setIsLoading(true);
     fetch(
       `https://api.unsplash.com/photos/random/?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}&count=${count}`
@@ -26,21 +26,24 @@ const HomePage = () => {
         setData([...data, ...imgs]);
       });
     setIsLoading(false);
+
     count = 10;
   };
 
-  // console.log("data", data);
+  console.log("data", data);
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 1000
-      ) {
-        getPhotos();
-      }
-    });
+    getPhotos();
   }, []);
+
+  window.addEventListener("scroll", () => {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 1000
+    ) {
+      getPhotos();
+    }
+  });
 
   return (
     <div>
